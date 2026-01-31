@@ -8,7 +8,7 @@
 services:
   # Bot 2 - Gateway (Infinity)
   clawdbot-infinity-bot2:
-    image: ghcr.io/sunwood-ai-oss-hub/agentos-clawd-agent3-infinity:latest
+    image: ghcr.io/sunwood-ai-oss-hub/agentos-openclaw-infinity:latest
     build:
       context: .
       dockerfile: ./docker/Dockerfile.infinity
@@ -35,7 +35,7 @@ services:
 
   # Bot 3 - Gateway (Infinity)
   clawdbot-infinity-bot3:
-    image: ghcr.io/sunwood-ai-oss-hub/agentos-clawd-agent3-infinity:latest
+    image: ghcr.io/sunwood-ai-oss-hub/agentos-openclaw-infinity:latest
     build:
       context: .
       dockerfile: ./docker/Dockerfile.infinity

@@ -14,7 +14,7 @@
 services:
   # Bot 1 - Gateway (Infinity)
   clawdbot-infinity-bot1:
-    image: ghcr.io/sunwood-ai-oss-hub/agentos-clawd-agent3-infinity:latest
+    image: ghcr.io/sunwood-ai-oss-hub/agentos-openclaw-infinity:latest
     build:
       context: .
       dockerfile: ./docker/Dockerfile.infinity
@@ -42,7 +42,7 @@ services:
 
   # CLI for development (Infinity)
   clawdbot-infinity-cli:
-    image: ghcr.io/sunwood-ai-oss-hub/agentos-clawd-agent3-infinity:latest
+    image: ghcr.io/sunwood-ai-oss-hub/agentos-openclaw-infinity:latest
     build:
       context: .
       dockerfile: ./docker/Dockerfile.infinity

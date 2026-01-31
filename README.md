@@ -142,7 +142,7 @@ docker build -t clawdbot:local ./clawdbot
 マルチアーキテクチャ対応イメージが公開されています：
 
 ```bash
-docker pull ghcr.io/sunwood-ai-oss-hub/openclaw-agent3:latest
+docker pull ghcr.io/sunwood-ai-oss-hub/agentos-openclaw-base:latest
 ```
 
 **対応プラットフォーム:**
@@ -593,7 +593,7 @@ sudo kill -9 <PID>
 - [OpenRouter ドキュメント](https://openrouter.ai/docs)
 - [Discord Developer Portal](https://discord.com/developers/applications)
 - [Docker ドキュメント](https://docs.docker.com/)
-- [GitHub Container Registry](https://github.com/Sunwood-AI-OSS-Hub/clawd-multi-agent-discord-docker/pkgs/container/openclaw-agent3)
+- [GitHub Container Registry](https://github.com/Sunwood-AI-OSS-Hub/clawd-multi-agent-discord-docker/pkgs/container/agentos-openclaw-base)
 
 ---
 

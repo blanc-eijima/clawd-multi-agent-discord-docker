@@ -12,31 +12,14 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  build-and-push:
+  # Base image - must be built first
+  build-base:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    strategy:
-      matrix:
-        include:
-          - name: agent3
-            context: ./clawdbot
-            dockerfile: ./clawdbot/Dockerfile
-            image_suffixes: |
-              sunwood-ai-oss-hub/agentos-clawd-agent3
-              ${{ github.repository }}
-          - name: browser
-            context: .
-            dockerfile: ./docker/Dockerfile.browser
-            image_suffixes: |
-              sunwood-ai-oss-hub/agentos-clawd-browser
-          - name: infinity
-            context: .
-            dockerfile: ./docker/Dockerfile.infinity
-            image_suffixes: |
-              sunwood-ai-oss-hub/agentos-infinity
-
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,11 +36,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata for ${{ matrix.name }}
+      - name: Extract metadata for base
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ join(format('{0}/{1}', env.REGISTRY, matrix.image_suffixes), '\n') }}
+          images: |
+            ghcr.io/sunwood-ai-oss-hub/agentos-openclaw-base
+            ${{ github.repository }}-base
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -66,11 +51,111 @@ jobs:
             type=sha,prefix=
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and push ${{ matrix.name }}
+      - name: Build and push base
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.context }}
-          file: ${{ matrix.dockerfile }}
+          context: ./clawdbot
+          file: ./clawdbot/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Browser image - depends on base
+  build-browser:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: build-base
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for browser
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/sunwood-ai-oss-hub/agentos-openclaw-browser
+            ${{ github.repository }}-browser
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{date}}
+            type=sha,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push browser
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/Dockerfile.browser
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Infinity image - depends on base
+  build-infinity:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: build-base
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for infinity
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/sunwood-ai-oss-hub/agentos-openclaw-infinity
+            ${{ github.repository }}-infinity
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{date}}
+            type=sha,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push infinity
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/Dockerfile.infinity
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}

@@ -1,66 +1,62 @@
 # =============================================================================
-# Clawdbot Infinity - Development Environment (Main Bot)
+# Clawdbot Infinity - Multi Bot Configuration (Bot 2 & 3)
 # =============================================================================
-# Features:
-# - agent-browser installed
-# - GitHub CLI (gh) installed
-# - Non-root user with passwordless sudo
-#
 # Usage:
-#   docker compose -f docker-compose.infinity.yml up -d
-#   docker compose -f docker-compose.infinity.yml run --rm clawdbot-infinity-bot1
+#   docker compose -f docker-compose.infinity.multi.yml up -d
 # =============================================================================
 
 services:
-  # Bot 1 - Gateway (Infinity)
-  clawdbot-infinity-bot1:
+  # Bot 2 - Gateway (Infinity)
+  clawdbot-infinity-bot2:
     image: ghcr.io/sunwood-ai-oss-hub/agentos-clawd-agent3-infinity:latest
     build:
       context: .
       dockerfile: ./docker/Dockerfile.infinity
-    container_name: clawdbot-infinity-bot1
+    container_name: clawdbot-infinity-bot2
     environment:
       HOME: /home/agent
       TERM: xterm-256color
       PLAYWRIGHT_BROWSERS_PATH: /opt/playwright
-      CLAWDBOT_GATEWAY_TOKEN: ${CLAWDBOT_BOT1_GATEWAY_TOKEN}
+      CLAWDBOT_GATEWAY_TOKEN: ${CLAWDBOT_BOT2_GATEWAY_TOKEN}
       ZAI_API_KEY: ${ZAI_API_KEY}
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
-      DISCORD_BOT_TOKEN: ${DISCORD_BOT1_TOKEN}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT2_TOKEN}
       GITHUB_TOKEN: ${GH_PAT_BOT1}
     volumes:
-      - ./config/bot1:/home/agent/.clawdbot
-      - ./workspace/bot1:/home/agent/clawd
+      - ./config/bot2:/home/agent/.clawdbot
+      - ./workspace/bot2:/home/agent/clawd
     ports:
-      - "18789:18789"
-      - "3001:3000"
+      - "18791:18789"
     init: true
     restart: unless-stopped
     command: ["sh", "-c", "rm -f /home/agent/.clawdbot/*.lock && exec node dist/index.js gateway --bind lan"]
     networks:
       - infinity-network
 
-  # CLI for development (Infinity)
-  clawdbot-infinity-cli:
+  # Bot 3 - Gateway (Infinity)
+  clawdbot-infinity-bot3:
     image: ghcr.io/sunwood-ai-oss-hub/agentos-clawd-agent3-infinity:latest
     build:
       context: .
       dockerfile: ./docker/Dockerfile.infinity
-    container_name: clawdbot-infinity-cli
+    container_name: clawdbot-infinity-bot3
     environment:
       HOME: /home/agent
       TERM: xterm-256color
-      BROWSER: echo
+      PLAYWRIGHT_BROWSERS_PATH: /opt/playwright
+      CLAWDBOT_GATEWAY_TOKEN: ${CLAWDBOT_BOT3_GATEWAY_TOKEN}
       ZAI_API_KEY: ${ZAI_API_KEY}
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT3_TOKEN}
       GITHUB_TOKEN: ${GH_PAT_BOT1}
     volumes:
-      - ./config/bot1:/home/agent/.clawdbot
-      - ./workspace/bot1:/home/agent/clawd
-    stdin_open: true
-    tty: true
+      - ./config/bot3:/home/agent/.clawdbot
+      - ./workspace/bot3:/home/agent/clawd
+    ports:
+      - "18793:18789"
     init: true
-    entrypoint: ["bash"]
+    restart: unless-stopped
+    command: ["sh", "-c", "rm -f /home/agent/.clawdbot/*.lock && exec node dist/index.js gateway --bind lan"]
     networks:
       - infinity-network
 

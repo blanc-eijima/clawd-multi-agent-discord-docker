@@ -7,7 +7,10 @@ USER root
 # Install agent-browser globally
 RUN npm install -g agent-browser
 
-# Install Playwright dependencies for Chromium
+# Install Playwright globally first
+RUN npm install -g playwright
+
+# Install Playwright Chromium and dependencies
 RUN npx playwright install --with-deps chromium
 
 # Switch back to node user for security

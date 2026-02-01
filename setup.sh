@@ -71,8 +71,16 @@ setup_bot() {
 
     # Setup Discord channel
     echo "Adding Discord channel to $BOT_NAME..."
-    docker compose --profile cli run --rm openclaw-${BOT_NAME}-cli \
-        channels add --channel discord --token "$DISCORD_TOKEN"
+    if [ "$BOT_NUM" = "1" ]; then
+        docker compose --profile cli run --rm openclaw-cli \
+            channels add --channel discord --token "$DISCORD_TOKEN"
+    else
+        # For bot2 and bot3, use the main CLI with custom config directory
+        docker compose --profile cli run --rm \
+            -v ./config/bot${BOT_NUM}:/home/node/.openclaw \
+            openclaw-cli \
+            channels add --channel discord --token "$DISCORD_TOKEN"
+    fi
 
     echo "✅ $BOT_NAME setup complete!"
 }

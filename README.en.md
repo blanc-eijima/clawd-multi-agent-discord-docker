@@ -172,9 +172,9 @@ Edit `.env`:
 
 ```bash
 # Gateway tokens (3 unique values)
-CLAWDBOT_BOT1_GATEWAY_TOKEN=your_token_1
-CLAWDBOT_BOT2_GATEWAY_TOKEN=your_token_2
-CLAWDBOT_BOT3_GATEWAY_TOKEN=your_token_3
+OPENCLAW_BOT1_GATEWAY_TOKEN=your_token_1
+OPENCLAW_BOT2_GATEWAY_TOKEN=your_token_2
+OPENCLAW_BOT3_GATEWAY_TOKEN=your_token_3
 
 # AI API Keys (configure only the providers you need)
 ZAI_API_KEY=your_glm_api_key

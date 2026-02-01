@@ -172,9 +172,9 @@ openssl rand -hex 32  # Bot 3 用
 
 ```bash
 # ゲートウェイトークン（3つの異なる値）
-CLAWDBOT_BOT1_GATEWAY_TOKEN=生成したトークン1
-CLAWDBOT_BOT2_GATEWAY_TOKEN=生成したトークン2
-CLAWDBOT_BOT3_GATEWAY_TOKEN=生成したトークン3
+OPENCLAW_BOT1_GATEWAY_TOKEN=生成したトークン1
+OPENCLAW_BOT2_GATEWAY_TOKEN=生成したトークン2
+OPENCLAW_BOT3_GATEWAY_TOKEN=生成したトークン3
 
 # AI APIキー（必要なプロバイダーのみ設定）
 ZAI_API_KEY=あなたのGLM_APIキー

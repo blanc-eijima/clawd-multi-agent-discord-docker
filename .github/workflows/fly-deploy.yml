@@ -23,10 +23,10 @@ jobs:
         run: |
           flyctl deploy \
             --remote-only \
-            --ha=false
+            --ha=false \
+            --env ZAI_API_KEY="${{ secrets.ZAI_API_KEY }}" \
+            --env OPENROUTER_API_KEY="${{ secrets.OPENROUTER_API_KEY }}" \
+            --env DISCORD_BOT_TOKEN="${{ secrets.DISCORD_BOT_TOKEN }}" \
+            --env OPENCLAW_GATEWAY_TOKEN="${{ secrets.OPENCLAW_GATEWAY_TOKEN }}"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-          OPENCLAW_GATEWAY_TOKEN: ${{ secrets.OPENCLAW_GATEWAY_TOKEN }}

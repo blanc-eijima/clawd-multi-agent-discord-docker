@@ -22,10 +22,9 @@ jobs:
       - name: Deploy to Fly.io
         run: |
           flyctl deploy \
-            --app-name=${{ env.FLY_APP_NAME }} \
+            -a ${{ env.FLY_APP_NAME }} \
             --region=nrt \
-            --memory=2048 \
-            --vm-size=shared-cpu-1x \
+            --ha=false \
             --env=ZAI_API_KEY=${{ secrets.ZAI_API_KEY }} \
             --env=OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }} \
             --env=DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }} \

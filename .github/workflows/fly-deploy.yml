@@ -1,0 +1,34 @@
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+env:
+  FLY_APP_NAME: openclaw-agent3
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+        
+      - name: Deploy to Fly.io
+        run: |
+          flyctl deploy \
+            --app-name=${{ env.FLY_APP_NAME }} \
+            --region=nrt \
+            --memory=2048 \
+            --vm-size=shared-cpu-1x \
+            --env=ZAI_API_KEY=${{ secrets.ZAI_API_KEY }} \
+            --env=OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }} \
+            --env=DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }} \
+            --env=OPENCLAW_GATEWAY_TOKEN=${{ secrets.OPENCLAW_GATEWAY_TOKEN }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

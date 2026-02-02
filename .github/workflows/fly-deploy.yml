@@ -22,12 +22,11 @@ jobs:
       - name: Deploy to Fly.io
         run: |
           flyctl deploy \
-            -a ${{ env.FLY_APP_NAME }} \
-            --region=nrt \
-            --ha=false \
-            --env=ZAI_API_KEY=${{ secrets.ZAI_API_KEY }} \
-            --env=OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }} \
-            --env=DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }} \
-            --env=OPENCLAW_GATEWAY_TOKEN=${{ secrets.OPENCLAW_GATEWAY_TOKEN }}
+            --remote-only \
+            --ha=false
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          OPENCLAW_GATEWAY_TOKEN: ${{ secrets.OPENCLAW_GATEWAY_TOKEN }}
